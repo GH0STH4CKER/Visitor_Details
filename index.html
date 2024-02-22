@@ -5,27 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitor Location</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0f0f0f;
+    color: #ffffff;
+}
 
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    background: linear-gradient(45deg, #1a1a1a, #333333);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+#country{color: lightgreen;}
+#city{color:cyan;}
+#isp{color:teal;}
+h1 {
+    margin-top: 0;
+    text-align: center;
+}
 
-        h1 {
-            margin-top: 0;
-        }
+p {
+    margin: 10px 0;
+    font-size: 16px;
+}
 
-        p {
-            margin: 10px 0;
-        }
+span {
+    font-weight: bold;
+}
+
+/* Style for the information spans */
+span#ip-address {
+    color: #f46f0e; /* Orange color */
+}
+
+span#latitude,
+span#longitude {
+    color: #009688; /* Teal color */
+}
+
+/* Style for the browser information */
+span#browser {
+    color: #2196f3; /* Blue color */
+}
+
+/* Style for the device type */
+span#device-type {
+    color: #ffeb3b; /* Yellow color */
+}
+
+/* Style for the OS */
+span#os {
+    color: #9c27b0; /* Purple color */
+}
     </style>
 </head>
 <body>
