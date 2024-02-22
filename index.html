@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Visitor Location</h1>
+        <p>Your IP Address : <span id="ip-address"></span></p>
+        <p>Country: <span id="country"></span></p>
+        <p>City: <span id="city"></span></p>
+        <p>Region: <span id="region"></span></p>
+        <p>ISP: <span id="isp"></span></p>
+        <p>Operating System: <span id="os"></span></p>
+        <p>Device Type: <span id="device-type"></span></p>
+        <p>Browser: <span id="browser"></span></p>
+        <p>Display : <span id="screen-size"></span></p>
+        <p>Latitude: <span id="latitude"></span></p>
+        <p>Longitude: <span id="longitude"></span></p>
+    </div>
+    <script>
+        function checkBrowser() { 
+            // Get the user-agent string 
+            let userAgentString = navigator.userAgent; 
+
+            // Detect Chrome 
+            let chromeAgent = userAgentString.indexOf("Chrome") > -1; 
+
+            // Detect Internet Explorer 
+            let IExplorerAgent = userAgentString.indexOf("MSIE") > -1 ||  
+                                userAgentString.indexOf("rv:") > -1; 
+
+            // Detect Firefox 
+            let firefoxAgent = userAgentString.indexOf("Firefox") > -1; 
+
+            // Detect Safari 
+            let safariAgent = userAgentString.indexOf("Safari") > -1; 
+                  
+            // Discard Safari since it also matches Chrome 
+            if ((chromeAgent) && (safariAgent))  
+                safariAgent = false; 
+
+            // Detect Opera 
+            let operaAgent = userAgentString.indexOf("OP") > -1; 
+                  
+            // Discard Chrome since it also matches Opera      
+            if ((chromeAgent) && (operaAgent))  
+                chromeAgent = false; 
+
+            // Return detected browsers
+            return {
+                Safari: safariAgent,
+                Chrome: chromeAgent,
+                ie: IExplorerAgent,
+                Opera: operaAgent,
+                Firefox: firefoxAgent
+            };
+        }
+
+        window.onload = function() {
+            fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip-address').textContent = data.ip;
+                document.getElementById('country').textContent = data.country_name;
+                document.getElementById('city').textContent = data.city;
+                document.getElementById('region').textContent = data.region;
+                document.getElementById('isp').textContent = data.org;
+            })
+            .catch(error => console.error('Error fetching location:', error));
+
+            // Get browser information
+            const browserInfo = checkBrowser();
+            document.getElementById('browser').textContent = Object.keys(browserInfo).filter(key => browserInfo[key]).join(', ');
+
+            // Get operating system
+            let os = navigator.userAgent.slice(13).split(';')[0];
+            document.getElementById('os').textContent = os;
+
+            // Get screen width and height
+            const screenWidth = screen.width;
+            const screenHeight = screen.height;
+            document.getElementById('screen-size').textContent = screenWidth + ' x ' + screenHeight;
+
+            // Infer device type based on screen size
+            let deviceType = 'Unknown';
+            if (screenWidth <= 480 && screenHeight <= 800) {
+                deviceType = 'Mobile';
+            } else if (screenWidth <= 1024 && screenHeight <= 768) {
+                deviceType = 'Tablet';
+            } else {
+                deviceType = 'Desktop/Laptop';
+            }
+            document.getElementById('device-type').textContent = deviceType;
+
+            // Get geolocation
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    document.getElementById('latitude').textContent = position.coords.latitude;
+                    document.getElementById('longitude').textContent = position.coords.longitude;
+                });
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</body>
+</html>
